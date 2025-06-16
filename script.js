@@ -27,12 +27,40 @@ const operate = function(n1, op, n2) {
 }
 
 let btns = document.querySelectorAll("button")
+
+let numbers = document.querySelectorAll(".number")
+let ops = document.querySelectorAll(".operator")
+let equals = document.querySelector(".equals");
+let clear = document.querySelector(".clear")
 let display = document.querySelector(".display")
 
+let store;
+let opsClicked = false;
+
 const display_function = function(event){
-    display.textContent += event.target.innerHTML;
+    if (event.target.matches(".number")){
+        display.textContent += event.target.textContent;
+        store = display.textContent;
+        if (opsClicked){
+            y = parseInt(store);
+        }
+        else{
+            x = parseInt(store);
+        }
+    }
+    if (event.target.matches(".operator")){
+        operator = event.target.textContent;
+        display.textContent += event.target.textContent;
+        opsClicked = true;
+        display.textContent = "";
+    }
+
+    if (event.target.matches(".equals")){
+        display.textContent = operate(x, operator, y).toString();
+    }
 }
 
 btns.forEach(button => {
     button.addEventListener("click", display_function)
 });
+
