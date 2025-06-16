@@ -34,29 +34,52 @@ let equals = document.querySelector(".equals");
 let clear = document.querySelector(".clear")
 let display = document.querySelector(".display")
 
-let store;
 let opsClicked = false;
+let calculationFinished = false;
 
 const display_function = function(event){
     if (event.target.matches(".number")){
-        display.textContent += event.target.textContent;
-        store = display.textContent;
-        if (opsClicked){
-            y = parseInt(store);
+        if (calculationFinished){
+            display.textContent = event.target.textContent;
+            if (opsClicked){
+                y = parseInt(display.textContent);
+            }
+            else{
+                x = parseInt(display.textContent);
+            }
+            calculationFinished = false;
         }
         else{
-            x = parseInt(store);
+            display.textContent += event.target.textContent;
+            if (opsClicked){
+                y = parseInt(display.textContent);
+            }
+            else{
+                x = parseInt(display.textContent);
+            }
         }
     }
+
     if (event.target.matches(".operator")){
         operator = event.target.textContent;
-        display.textContent += event.target.textContent;
         opsClicked = true;
         display.textContent = "";
     }
 
     if (event.target.matches(".equals")){
         display.textContent = operate(x, operator, y).toString();
+        x = parseInt(display.textContent);
+        opsClicked = false;
+        calculationFinished = true;
+    }
+
+    if (event.target.matches(".clear")){
+        display.textContent = "";
+        x = null;
+        y = null;
+        operator = null;
+        opsClicked = false;
+        calculationFinished = false;
     }
 }
 
